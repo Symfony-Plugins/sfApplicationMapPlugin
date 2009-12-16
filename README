@@ -1,0 +1,40 @@
+sfApplicationMapPlugin
+========================
+
+Provides you with a task generating images of appliaction-module-action
+structure of the project using the graphviz tool.
+
+Installation
+============
+
+Install the plugin via the subversion repository:
+
+    $ svn co http://svn.symfony-project.com/plugins/sfApplicationMapPlugin/trunk plugins/sfApplicationMapPlugin
+
+from the project root directory or by using the command:
+
+    $ ./symfony plugin:install sfApplicationMapPlugin
+
+Usage
+=====
+
+Simply type the following command:
+
+    $ ./symfony project:application-map
+
+which creates few files under the _doc/graph_ directory:
+
+  *   __application-map.dot__ - source graphviz file for all image files
+
+and alternative images of application map:
+
+  *   __application-map.dot.png__ : image created by __dot__ command
+  *   __application-map.neato.png__ : image created by __neato__ command
+  *   __application-map.twopi.png__ : image created by __twopi__ command
+  *   __application-map.circo.png__ : image created by __circo__ command
+  *   __application-map.fdp.png__ : image created by __fdp__ command
+
+Prerequisites
+=============
+
+  * You must have __graphviz__ installed on your system.
