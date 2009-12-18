@@ -64,16 +64,24 @@ class sfProjectApplicationMapTask extends sfBaseTask
   const IMG_FDP_FILE = "applications.fdp.png";
 
   /**
+   * Max length (in characters) of each line of action comment
+   *
+   * @var integer
+   */
+  const MAX_LINE_LENGTH = 12;
+
+  /**
+   * Label shown for admin-generator modules
+   *
+   * @var string
+   */
+  const ADMIN_LABEL = "admin";
+
+  /**
    * Configures the current task.
    */
   protected function configure()
   {
-    $this->addOptions(array(
-      new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
-      new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
-      new sfCommandOption('connection', null, sfCommandOption::PARAMETER_REQUIRED, 'The connection name', 'doctrine'),
-    ));
-
     $this->aliases = array('project-map');
     $this->namespace        = 'project';
     $this->name             = 'application-map';
@@ -83,16 +91,6 @@ The [project:application-map|INFO] task outputs application-module-action
 structure using graphviz. Call it with:
 
   [./symfony project:application-map|INFO]
-
-The task read the schema information in [config/schema.xml|COMMENT] and/or
-[config/schema.yml|COMMENT] from the project and all installed plugins.
-
-The task use the [doctrine|COMMENT] connection as defined in [config/databases.yml|COMMENT].
-You can use another connection by using the [--connection|COMMENT] option:
-
-  [./symfony doctrine:graphviz --connection="name"|INFO]
-
-The schema files are created in [data/graph/doctrine|COMMENT].
 EOF;
   }
 
@@ -107,10 +105,34 @@ EOF;
     return ($dir != '.' && $dir != '..' && $dir != '.svn');
   }
 
+  function getFormattedComment($text)
+  {
+    $result = '';
+    $length = strlen($text);
+    $ind = 0;
+    $act_lin_length = 0;
+    while ($ind < $length)
+    {
+      if ($text[$ind] == " " && $act_line_length > self::MAX_LINE_LENGTH)
+      {
+        $result .= "</td></tr><tr><td>";
+        $act_line_length = 0;
+      }
+      else
+      {
+        $result .= $text[$ind];
+      }
+      $ind++;
+      $act_line_length++;
+    }
+    return $result;
+  }
+
   /**
+   * Analyses the appliaction-module-action structure of the project and
+   * creates an output array.
    *
-   *
-   *
+   * @return Array
    */
   protected function getContent()
   {
@@ -201,10 +223,30 @@ EOF;
     return $content;
   }
 
+  /**
+   * Constructs a graph using Image_GraphViz class, which content is based on
+   * appliaction-module-action structure of the project.
+   *
+   * @param Array $content - appliaction-module-action structure
+   * @return Image_GraphViz
+   */
   public function getGraph($content)
   {
     // new graph object
     $graph = new Image_GraphViz(false, null, 'G', false);
+
+    $config_file = sfConfig::get('sf_config_dir').'/properties.ini';
+    $config_content = parse_ini_file($config_file, true);
+    $root_node = strtoupper(isset($config_content['symfony']['name']) ? $config_content['symfony']['name'] : 'Project name');
+
+    $graph->addNode(
+      $root_node,
+      array(
+        'shape' => 'doubleoctagon',
+        'comment' => 'root node',
+        'style' => 'filled',
+        'fillcolor' => 'goldenrod3'),
+      $app_name);
 
     // loop iterating applications
     foreach ($content as $app_name => $app_content)
@@ -214,7 +256,9 @@ EOF;
         $app_name,
         array(
           'shape' => 'doublecircle',
-          'comment' => $app_name.' application'),
+          'comment' => $app_name.' application',
+          'style' => 'filled',
+          'fillcolor' => 'goldenrod2'),
         $app_name);
 
       // loop iterating each module
@@ -226,11 +270,12 @@ EOF;
           $graph->addNode(
             $app_name.'_'.$mod_name,
             array(
-              'label' => $mod_name,
+              'headlabel' => $mod_name,
+              'label' => "<table border=\"0\" cellborder=\"0\"><tr><td><font color=\"red\" face=\"Courier-New\" point-size=\"16\">".$mod_name."</font></td></tr>\n<tr><td>".self::ADMIN_LABEL."</td></tr></table>",
               'shape' => 'component',
               'comment' => $mod_name.' module',
               'style' => 'filled',
-              'fillcolor' => 'gray'));
+              'fillcolor' => 'bisque2'));
         }
         else // module is not admin-generator
         {
@@ -239,22 +284,21 @@ EOF;
             array(
               'label' => $mod_name,
               'shape' => 'diamond',
-              'comment' => $mod_name.' module'));
-    //      foreach($mod_content as $act_name => $act_content)
-    //      {
-    //        var_dump($act_name);
-    //        var_dump($act_content);
-    //        var_dump($mod_content);
-    //        echo '<hr />';
-    //      }
+              'comment' => $mod_name.' module',
+              'style' => 'filled',
+              'fillcolor' => 'goldenrod1'));
           foreach($mod_content['actions'] as $act_index => $act_name)
           {
+            $act_comment = $this->getFormattedComment($mod_content['comments'][$act_index]);
             $graph->addNode(
               $app_name.'_'.$mod_name.'_'.$act_name,
               array(
-                'label' => $act_name,
+                'label' => "<table border=\"0\" cellborder=\"0\"><tr><td><font color=\"chartreuse4\" face=\"Courier-New\" point-size=\"16\">".$act_name."</font></td></tr>\n<tr><td width=\"5\">$act_comment</td></tr></table>",
                 'shape' => 'rectangle',
-                'comment' => $act_name.' module'));
+                'comment' => $act_name.' module',
+                'width' => '1.0',
+                'style' => 'filled',
+                'fillcolor' => 'beige'));
             // link module to an action
             $graph->addEdge(array($app_name.'_'.$mod_name => $app_name.'_'.$mod_name.'_'.$act_name));
           }
@@ -263,7 +307,7 @@ EOF;
         $graph->addEdge(array($app_name => $app_name.'_'.$mod_name));
       }
       // link root node to an application
-      $graph->addEdge(array('root' => $app_name));
+      $graph->addEdge(array($root_node => $app_name));
     }
     return $graph;
   }

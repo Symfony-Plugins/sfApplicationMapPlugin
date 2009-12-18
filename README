@@ -18,7 +18,7 @@ from the project root directory or by using the command:
 Usage
 =====
 
-Simply type the following command:
+After you have created your applications, modules and actions () Simply type the following command:
 
     $ ./symfony project:application-map
 
@@ -34,7 +34,29 @@ and alternative images of application map:
   *   __application-map.circo.png__ : image created by __circo__ command
   *   __application-map.fdp.png__ : image created by __fdp__ command
 
+All possible GraphViz modes are used so that you can just choose which image is
+the most readable for you.
+
+Important notes
+===============
+
+  * All actions in _actions.class.php_ must be documented for the plugin to
+    parse them. Use the default action skeleton documentation block provided
+    with symfony.
+
+Application map examples
+========================
+
+## dot example
+
+![Example dot application map](http://img97.imageshack.us/img97/2540/applicationsdot.png "Example dot application map")
+
+## fdp example
+
+![Example fdp application map](http://img502.imageshack.us/img502/9818/applicationsfdp.png "Example fdp application map")
+
 Prerequisites
 =============
 
-  * You must have __graphviz__ installed on your system.
+  * You must have [GraphViz](http://www.graphviz.org/Documentation.php)
+    installed on your system.
