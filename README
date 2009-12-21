@@ -7,22 +7,24 @@ structure of the project using the graphviz tool.
 Installation
 ============
 
-Install the plugin via the subversion repository:
+Install the plugin via the subversion repository by executing the following
+command from the project root directory:
 
-    $ svn co http://svn.symfony-project.com/plugins/sfApplicationMapPlugin/trunk plugins/sfApplicationMapPlugin
+    $ svn co http://svn.symfony-project.com/plugins/sfApplicationMapPlugin/branches/1.4 plugins/sfApplicationMapPlugin
 
-from the project root directory or by using the command:
+or by using the default symfony plugin install command:
 
     $ ./symfony plugin:install sfApplicationMapPlugin
 
 Usage
 =====
 
-After you have created your applications, modules and actions () Simply type the following command:
+After you have created your applications, modules and actions, simply type the
+following command:
 
     $ ./symfony project:application-map
 
-which creates few files under the _doc/graph_ directory:
+which creates the _doc/graph_ directory and few files inside it:
 
   *   __application-map.dot__ - source graphviz file for all image files
 

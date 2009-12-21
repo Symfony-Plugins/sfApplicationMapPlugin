@@ -342,11 +342,11 @@ EOF;
     file_put_contents($baseDir . '/' . self::DOT_FILE, $graph->parse());
 
     // executing image files generating
-    $this->getFilesystem()->sh('dot ' . $baseDir . '/' . self::DOT_FILE . ' -Tpng -o' . $baseDir . '/' . self::IMG_DOT_FILE);
-    $this->getFilesystem()->sh('neato ' . $baseDir . '/' . self::DOT_FILE . ' -Tpng -o' . $baseDir . '/' . self::IMG_NEATO_FILE);
-    $this->getFilesystem()->sh('twopi ' . $baseDir . '/' . self::DOT_FILE . ' -Tpng -o' . $baseDir . '/' . self::IMG_TWOPI_FILE);
-    $this->getFilesystem()->sh('circo ' . $baseDir . '/' . self::DOT_FILE . ' -Tpng -o' . $baseDir . '/' . self::IMG_CIRCO_FILE);
-    $this->getFilesystem()->sh('fdp ' . $baseDir . '/' . self::DOT_FILE . ' -Tpng -o' . $baseDir . '/' . self::IMG_FDP_FILE);
+    $this->getFilesystem()->execute('dot ' . $baseDir . '/' . self::DOT_FILE . ' -Tpng -o' . $baseDir . '/' . self::IMG_DOT_FILE);
+    $this->getFilesystem()->execute('neato ' . $baseDir . '/' . self::DOT_FILE . ' -Tpng -o' . $baseDir . '/' . self::IMG_NEATO_FILE);
+    $this->getFilesystem()->execute('twopi ' . $baseDir . '/' . self::DOT_FILE . ' -Tpng -o' . $baseDir . '/' . self::IMG_TWOPI_FILE);
+    $this->getFilesystem()->execute('circo ' . $baseDir . '/' . self::DOT_FILE . ' -Tpng -o' . $baseDir . '/' . self::IMG_CIRCO_FILE);
+    $this->getFilesystem()->execute('fdp ' . $baseDir . '/' . self::DOT_FILE . ' -Tpng -o' . $baseDir . '/' . self::IMG_FDP_FILE);
   }
 }
 
