@@ -10,10 +10,10 @@
   <email>tomasz.ducin@gmail.com</email>
   <active>yes</active>
  </lead>
- <date>2009-12-21</date>
+ <date>2009-12-31</date>
  <time>11:00:00</time>
  <version>
-   <release>1.1.0</release>
+   <release>1.1.1</release>
    <api>1.0.0</api>
  </version>
  <stability>
@@ -25,6 +25,9 @@
 
  <contents>
    <dir name="/">
+     <dir name="config">
+       <file name="map.ini" role="data" />
+     </dir>
      <dir name="lib">
        <dir name="task">
          <file name="sfProjectApplicationMapTask.class.php" role="data" />
@@ -62,6 +65,23 @@
   </phprelease>
 
   <changelog>
+
+   <release>
+    <version>
+     <release>1.1.1</release>
+     <api>1.0.0</api>
+    </version>
+    <stability>
+     <release>stable</release>
+     <api>stable</api>
+    </stability>
+    <license uri="http://www.symfony-project.org/license">MIT license</license>
+    <date>2009-12-31</date>
+    <license>MIT</license>
+    <notes>
+     * visual settings configuration added
+    </notes>
+   </release>
 
    <release>
     <version>

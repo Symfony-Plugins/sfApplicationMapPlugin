@@ -230,7 +230,7 @@ EOF;
    * @param Array $content - appliaction-module-action structure
    * @return Image_GraphViz
    */
-  public function getGraph($content)
+  public function getGraph($content, $config)
   {
     // new graph object
     $graph = new Image_GraphViz(false, null, 'G', false);
@@ -242,10 +242,10 @@ EOF;
     $graph->addNode(
       $root_node,
       array(
-        'shape' => 'doubleoctagon',
+        'shape' => $config['root_shape'],
         'comment' => 'root node',
-        'style' => 'filled',
-        'fillcolor' => 'goldenrod3'),
+        'style' => $config['root_style'],
+        'fillcolor' => $config['root_fillcolor']),
       $app_name);
 
     // loop iterating applications
@@ -255,10 +255,10 @@ EOF;
       $graph->addNode(
         $app_name,
         array(
-          'shape' => 'doublecircle',
+          'shape' => $config['app_shape'],
           'comment' => $app_name.' application',
-          'style' => 'filled',
-          'fillcolor' => 'goldenrod2'),
+          'style' => $config['app_style'],
+          'fillcolor' => $config['app_fillcolor']),
         $app_name);
 
       // loop iterating each module
@@ -272,10 +272,10 @@ EOF;
             array(
               'headlabel' => $mod_name,
               'label' => "<table border=\"0\" cellborder=\"0\"><tr><td><font color=\"red\" face=\"Courier-New\" point-size=\"16\">".$mod_name."</font></td></tr>\n<tr><td>".self::ADMIN_LABEL."</td></tr></table>",
-              'shape' => 'component',
+              'shape' => $config['admin_shape'],
               'comment' => $mod_name.' module',
-              'style' => 'filled',
-              'fillcolor' => 'bisque2'));
+              'style' => $config['admin_style'],
+              'fillcolor' => $config['admin_fillcolor']));
         }
         else // module is not admin-generator
         {
@@ -283,10 +283,10 @@ EOF;
             $app_name.'_'.$mod_name,
             array(
               'label' => $mod_name,
-              'shape' => 'diamond',
+              'shape' => $config['module_shape'],
               'comment' => $mod_name.' module',
-              'style' => 'filled',
-              'fillcolor' => 'goldenrod1'));
+              'style' => $config['module_style'],
+              'fillcolor' => $config['module_fillcolor']));
           foreach($mod_content['actions'] as $act_index => $act_name)
           {
             $act_comment = $this->getFormattedComment($mod_content['comments'][$act_index]);
@@ -294,11 +294,11 @@ EOF;
               $app_name.'_'.$mod_name.'_'.$act_name,
               array(
                 'label' => "<table border=\"0\" cellborder=\"0\"><tr><td><font color=\"chartreuse4\" face=\"Courier-New\" point-size=\"16\">".$act_name."</font></td></tr>\n<tr><td width=\"5\">$act_comment</td></tr></table>",
-                'shape' => 'rectangle',
+                'shape' => $config['action_shape'],
                 'comment' => $act_name.' module',
                 'width' => '1.0',
-                'style' => 'filled',
-                'fillcolor' => 'beige'));
+                'style' => $config['action_style'],
+                'fillcolor' => $config['action_fillcolor']));
             // link module to an action
             $graph->addEdge(array($app_name.'_'.$mod_name => $app_name.'_'.$mod_name.'_'.$act_name));
           }
@@ -320,7 +320,13 @@ EOF;
    */
   protected function execute($arguments = array(), $options = array())
   {
-    $this->logSection('project', 'generating images');
+    $this->logSection('application-map', 'reading configuration');
+
+    // read the map.ini file
+    $ini_file = sfConfig::get('sf_root_dir').'/plugins/sfApplicationMapPlugin/config/map.ini';
+    $ini_content = parse_ini_file($ini_file, true);
+
+    $this->logSection('application-map', 'generating images');
 
     // creating directory for the graphviz plugin output
     $baseDir = sfConfig::get('sf_root_dir') . '/' . self::GRAPH_DIR;
@@ -336,7 +342,7 @@ EOF;
     $content = $this->getContent();
 
     // graph
-    $graph = $this->getGraph($content);
+    $graph = $this->getGraph($content, $ini_content);
 
     // saving dot code to a file
     file_put_contents($baseDir . '/' . self::DOT_FILE, $graph->parse());

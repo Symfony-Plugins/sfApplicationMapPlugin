@@ -39,6 +39,12 @@ and alternative images of application map:
 All possible GraphViz modes are used so that you can just choose which image is
 the most readable for you.
 
+Configuration
+=============
+
+All visual settings of the images can be set in the __config/map.ini__ file of
+the plugin.
+
 Important notes
 ===============
 
@@ -62,3 +68,8 @@ Prerequisites
 
   * You must have [GraphViz](http://www.graphviz.org/Documentation.php)
     installed on your system.
+
+Coming soon
+===========
+
+  * support for plugin modules
