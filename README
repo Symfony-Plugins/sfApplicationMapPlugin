@@ -43,7 +43,7 @@ Configuration
 =============
 
 All visual settings of the images can be set in the __config/map.ini__ file of
-the plugin.
+the plugin. Check GraphViz documentation for more details.
 
 Important notes
 ===============

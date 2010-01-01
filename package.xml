@@ -10,7 +10,7 @@
   <email>tomasz.ducin@gmail.com</email>
   <active>yes</active>
  </lead>
- <date>2009-12-31</date>
+ <date>2010-01-01</date>
  <time>11:00:00</time>
  <version>
    <release>1.1.1</release>
@@ -76,7 +76,7 @@
      <api>stable</api>
     </stability>
     <license uri="http://www.symfony-project.org/license">MIT license</license>
-    <date>2009-12-31</date>
+    <date>2010-01-01</date>
     <license>MIT</license>
     <notes>
      * visual settings configuration added
