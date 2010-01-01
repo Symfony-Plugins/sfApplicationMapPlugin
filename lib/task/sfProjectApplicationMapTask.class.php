@@ -228,6 +228,7 @@ EOF;
    * appliaction-module-action structure of the project.
    *
    * @param Array $content - appliaction-module-action structure
+   * @param Array $config - graph settings read from map.ini file
    * @return Image_GraphViz
    */
   public function getGraph($content, $config)
