@@ -43,14 +43,22 @@ Configuration
 =============
 
 All visual settings of the images can be set in the __config/map.ini__ file of
-the plugin. Check GraphViz documentation for more details.
+the plugin. Example settings look like the following:
+
+    app_shape           = doublecircle
+    app_style           = filled
+    app_fillcolor       = goldenrod2
+
+You can find all properties properly interpreted by GraphViz in its
+documentation, such as [colors](http://www.graphviz.org/doc/info/colors.html) or
+[shapes](http://www.graphviz.org/doc/info/shapes.html).
 
 Important notes
 ===============
 
-  * All actions in _actions.class.php_ must be documented for the plugin to
-    parse them. Use the default action skeleton documentation block provided
-    with symfony.
+  * All actions in _actions.class.php_ or _components.class.php_ must be
+    documented for the plugin to parse them. Use the default action skeleton
+    documentation block provided with symfony.
 
 Application map examples
 ========================
@@ -63,13 +71,24 @@ Application map examples
 
 ![Example fdp application map](http://img502.imageshack.us/img502/9818/applicationsfdp.png "Example fdp application map")
 
+## dot example with components
+
+![Example dot application map with components](http://img21.imageshack.us/img21/2540/applicationsdot.png "Example dot application map with components")
+
+## fdp example with components
+
+![Example fdp application map with components](http://img39.imageshack.us/img39/9818/applicationsfdp.png "Example fdp application map with components")
+
 Prerequisites
 =============
 
   * You must have [GraphViz](http://www.graphviz.org/Documentation.php)
     installed on your system.
 
-Coming soon
-===========
+Additional
+==========
 
-  * support for plugin modules
+  * coming soon: support for plugin modules
+
+  * thanks for all comments, suggestions and bug reports, they help a lot! Feel
+    free to write me.

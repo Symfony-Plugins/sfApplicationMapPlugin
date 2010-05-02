@@ -177,39 +177,64 @@ EOF;
             }
             else // actions reading
             {
-              $actions_file_path = $dir_mod.$file_mod.'/actions/actions.class.php';
-              $actions_file = file($actions_file_path);
-              $actions_content = implode("", $actions_file);
-              $matches = array();
-              $pattern = "/\/\*\*((.|\n)*?)public function execute([0-9A-Za-z_]*)/";
-              preg_match_all($pattern, $actions_content, $matches);
-              $content[$file_app][$file_mod]['comments'] = $matches[1];
-              $content[$file_app][$file_mod]['actions'] = $matches[3];
-              $pattern_internal = "/\/\*\*((.|\n)*?)\*\//";
-              preg_match($pattern_internal, $content[$file_app][$file_mod]['comments'][0], $content[$file_app][$file_mod]['comments'][0]);
-              $content[$file_app][$file_mod]['comments'][0] = $content[$file_app][$file_mod]['comments'][0][0];
+              $actions_dir = $dir_mod.$file_mod.'/actions/';
+              $element_files = array();
 
-              // lowercasing action names
-              foreach($content[$file_app][$file_mod]['actions'] as $key => &$action)
+              // actions
+              $actions_file_path = $actions_dir.'actions.class.php';
+              if (file_exists($actions_file_path))
               {
-                $action = strtolower($action);
+                $element_files['action'] = file($actions_file_path);
               }
-              // retrieving comment text
-              foreach($content[$file_app][$file_mod]['comments'] as $key => &$comment)
+
+              // components
+              $components_file_path = $actions_dir.'components.class.php';
+              if (file_exists($components_file_path))
               {
-                // creating temporary lines array
-                $lines = explode("\n", $comment);
+                $element_files['component'] = file($components_file_path);
+              }
 
-                // destroying first line which is either whitespaced or '/**'
-                unset($lines[0]);
-
-                // result comment array
-                $lines_res = array();
-                for($ind = 1; $ind <= count($lines) && trim($lines[$ind]) != "*"; $ind++)
+              foreach($element_files as $type => $file)
+              {
+                $file_content = implode("", $file);
+                $matches = array();
+                $pattern = "/\/\*\*((.|\n)*?)public function execute([0-9A-Za-z_]*)/";
+                preg_match_all($pattern, $file_content, $matches);
+                $content[$file_app][$file_mod][$type]['comments'] = $matches[1];
+                $content[$file_app][$file_mod][$type]['elements'] = $matches[3];
+                $pattern_internal = "/\/\*\*((.|\n)*?)\*\//";
+                preg_match($pattern_internal, $content[$file_app][$file_mod][$type]['comments'][0], $content[$file_app][$file_mod][$type]['comments'][0]);
+                $content[$file_app][$file_mod][$type]['comments'][0] = $content[$file_app][$file_mod][$type]['comments'][0][0];
+              }
+              // lowercasing action/component names
+              foreach($content[$file_app][$file_mod] as $type => &$elements)
+              {
+                foreach($elements['elements'] as $key => &$element)
                 {
-                  $lines_res[] = trim(substr(trim($lines[$ind]), 2));
+                  $element[0] = strtolower($element[0]); // lowercase only the first letter
+                  // lcfirst available since (PHP 5 >= 5.3.0)
                 }
-                $comment = implode(" ", $lines_res);
+              }
+
+              // retrieving comment text
+              foreach($content[$file_app][$file_mod] as $type => &$elements)
+              {
+                foreach($elements['comments'] as $key => &$comment)
+                {
+                  // creating temporary lines array
+                  $lines = explode("\n", $comment);
+
+                  // destroying first line which is either whitespaced or '/**'
+                  unset($lines[0]);
+
+                  // result comment array
+                  $lines_res = array();
+                  for($ind = 1; $ind <= count($lines) && trim($lines[$ind]) != "*"; $ind++)
+                  {
+                    $lines_res[] = trim(substr(trim($lines[$ind]), 2));
+                  }
+                  $comment = implode(" ", $lines_res);
+                }
               }
             }
           }
@@ -288,20 +313,24 @@ EOF;
               'comment' => $mod_name.' module',
               'style' => $config['module_style'],
               'fillcolor' => $config['module_fillcolor']));
-          foreach($mod_content['actions'] as $act_index => $act_name)
+          // loop iterating each action/component
+          foreach($mod_content as $type => $elements)
           {
-            $act_comment = $this->getFormattedComment($mod_content['comments'][$act_index]);
-            $graph->addNode(
-              $app_name.'_'.$mod_name.'_'.$act_name,
-              array(
-                'label' => "<table border=\"0\" cellborder=\"0\"><tr><td><font color=\"chartreuse4\" face=\"Courier-New\" point-size=\"16\">".$act_name."</font></td></tr>\n<tr><td width=\"5\">$act_comment</td></tr></table>",
-                'shape' => $config['action_shape'],
-                'comment' => $act_name.' module',
-                'width' => '1.0',
-                'style' => $config['action_style'],
-                'fillcolor' => $config['action_fillcolor']));
-            // link module to an action
-            $graph->addEdge(array($app_name.'_'.$mod_name => $app_name.'_'.$mod_name.'_'.$act_name));
+            foreach($elements['elements'] as $elem_index => $elem_name)
+            {
+              $elem_comment = $this->getFormattedComment($mod_content[$type]['comments'][$elem_index]);
+              $graph->addNode(
+                $app_name.'_'.$mod_name.'_'.$elem_name,
+                array(
+                  'label' => "<table border=\"0\" cellborder=\"0\"><tr><td><font color=\"chartreuse4\" face=\"Courier-New\" point-size=\"16\">".$elem_name."</font></td></tr>\n<tr><td width=\"5\">$elem_comment</td></tr></table>",
+                  'shape' => $config[$type.'_shape'],
+                  'comment' => $elem_name.' module',
+                  'width' => '1.0',
+                  'style' => $config[$type.'_style'],
+                  'fillcolor' => $config[$type.'_fillcolor']));
+              // link module to an action/component
+              $graph->addEdge(array($app_name.'_'.$mod_name => $app_name.'_'.$mod_name.'_'.$elem_name));
+            }
           }
         }
         // link application to a module

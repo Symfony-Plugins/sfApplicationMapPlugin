@@ -10,10 +10,10 @@
   <email>tomasz.ducin@gmail.com</email>
   <active>yes</active>
  </lead>
- <date>2010-01-01</date>
+ <date>2010-05-02</date>
  <time>11:00:00</time>
  <version>
-   <release>1.1.1</release>
+   <release>1.2.0</release>
    <api>1.0.0</api>
  </version>
  <stability>
@@ -80,6 +80,23 @@
     <license>MIT</license>
     <notes>
      * visual settings configuration added
+    </notes>
+   </release>
+
+   <release>
+    <version>
+     <release>1.2.0</release>
+     <api>1.0.0</api>
+    </version>
+    <stability>
+     <release>stable</release>
+     <api>stable</api>
+    </stability>
+    <license uri="http://www.symfony-project.org/license">MIT license</license>
+    <date>2010-05-02</date>
+    <license>MIT</license>
+    <notes>
+     * distinguish between actions and components
     </notes>
    </release>
 
