@@ -68,23 +68,6 @@
 
    <release>
     <version>
-     <release>1.1.1</release>
-     <api>1.0.0</api>
-    </version>
-    <stability>
-     <release>stable</release>
-     <api>stable</api>
-    </stability>
-    <license uri="http://www.symfony-project.org/license">MIT license</license>
-    <date>2010-01-01</date>
-    <license>MIT</license>
-    <notes>
-     * visual settings configuration added
-    </notes>
-   </release>
-
-   <release>
-    <version>
      <release>1.2.0</release>
      <api>1.0.0</api>
     </version>
@@ -97,6 +80,23 @@
     <license>MIT</license>
     <notes>
      * distinguish between actions and components
+    </notes>
+   </release>
+
+   <release>
+    <version>
+     <release>1.1.1</release>
+     <api>1.0.0</api>
+    </version>
+    <stability>
+     <release>stable</release>
+     <api>stable</api>
+    </stability>
+    <license uri="http://www.symfony-project.org/license">MIT license</license>
+    <date>2010-01-01</date>
+    <license>MIT</license>
+    <notes>
+     * visual settings configuration added
     </notes>
    </release>
 
