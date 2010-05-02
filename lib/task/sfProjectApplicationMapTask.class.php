@@ -221,6 +221,12 @@ EOF;
               {
                 foreach($elements['comments'] as $key => &$comment)
                 {
+                  // eliminating any non-execute method comments
+                  $pattern = "/\/\*\*((.|\n)*?)\*\//";
+                  preg_match_all($pattern, $comment, $matches);
+                  if(count($matches[1]))
+                    $comment = $matches[1][0];
+
                   // creating temporary lines array
                   $lines = explode("\n", $comment);
 
