@@ -105,6 +105,12 @@ EOF;
     return ($dir != '.' && $dir != '..' && $dir != '.svn');
   }
 
+  /**
+   * Generates HTML format of comment to be nicely displayed by the graph
+   *
+   * @param $text - original comment content
+   * @return String - HTML formatted comment
+   */
   function getFormattedComment($text)
   {
     $result = '';
@@ -328,7 +334,7 @@ EOF;
               $graph->addNode(
                 $app_name.'_'.$mod_name.'_'.$elem_name,
                 array(
-                  'label' => "<table border=\"0\" cellborder=\"0\"><tr><td><font color=\"chartreuse4\" face=\"Courier-New\" point-size=\"16\">".$elem_name."</font></td></tr>\n<tr><td width=\"5\">$elem_comment</td></tr></table>",
+                  'label' => "<table border=\"0\" cellborder=\"0\"><tr><td><font color=\"chartreuse4\" face=\"Courier-New\" point-size=\"16\">".$elem_name."</font></td></tr>\n<tr><td width=\"5\">".$elem_comment."</td></tr></table>",
                   'shape' => $config[$type.'_shape'],
                   'comment' => $elem_name.' module',
                   'width' => '1.0',
@@ -349,7 +355,9 @@ EOF;
   }
 
   /**
-   * Executes the current task.
+   * Executes the current task. The task will analyse the whole application structure,
+   * create graph representation for the map graph and then generate the graph based
+   * image maps in in 5 different formats.
    *
    * @param array $arguments  An array of arguments
    * @param array $options    An array of options
