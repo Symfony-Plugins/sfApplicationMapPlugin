@@ -10,10 +10,10 @@
   <email>tomasz.ducin@gmail.com</email>
   <active>yes</active>
  </lead>
- <date>2010-05-22</date>
+ <date>2010-08-16</date>
  <time>11:00:00</time>
  <version>
-   <release>1.2.2</release>
+   <release>1.2.3</release>
    <api>1.0.0</api>
  </version>
  <stability>
@@ -65,6 +65,22 @@
   </phprelease>
 
   <changelog>
+
+   <release>
+    <version>
+     <release>1.2.3</release>
+     <api>1.0.0</api>
+    </version>
+    <stability>
+     <release>stable</release>
+     <api>stable</api>
+    </stability>
+    <license uri="http://www.symfony-project.org/license">MIT license</license>
+    <date>2010-08-16</date>
+    <license>MIT</license>
+    <notes>
+     * added separate application graphs (1 graph for entire project + 1 for each application)    </notes>
+   </release>
 
    <release>
     <version>

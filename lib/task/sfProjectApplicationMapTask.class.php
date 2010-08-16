@@ -26,42 +26,42 @@ class sfProjectApplicationMapTask extends sfBaseTask
    *
    * @var string
    */
-  const DOT_FILE = "applications.dot";
+  const DOT_EXT = "dot";
 
   /**
    * Name of the image file created by the dot command
    *
    * @var string
    */
-  const IMG_DOT_FILE = "applications.dot.png";
+  const IMG_DOT_EXT = "dot.png";
 
   /**
    * Name of the image file created by the neato command
    *
    * @var string
    */
-  const IMG_NEATO_FILE = "applications.neato.png";
+  const IMG_NEATO_EXT = "neato.png";
 
   /**
    * Name of the image file created by the twopi command
    *
    * @var string
    */
-  const IMG_TWOPI_FILE = "applications.twopi.png";
+  const IMG_TWOPI_EXT = "twopi.png";
 
   /**
    * Name of the image file created by the circo command
    *
    * @var string
    */
-  const IMG_CIRCO_FILE = "applications.circo.png";
+  const IMG_CIRCO_EXT = "circo.png";
 
   /**
    * Name of the image file created by the fdp command
    *
    * @var string
    */
-  const IMG_FDP_FILE = "applications.fdp.png";
+  const IMG_FDP_EXT = "fdp.png";
 
   /**
    * Max length (in characters) of each line of action comment
@@ -268,7 +268,7 @@ EOF;
    * @param Array $config - graph settings read from map.ini file
    * @return Image_GraphViz
    */
-  public function getGraph($content, $config)
+  public function getProjectGraph($content, $config)
   {
     // new graph object
     $graph = new Image_GraphViz(false, null, 'G', false);
@@ -355,6 +355,82 @@ EOF;
   }
 
   /**
+   * Constructs a graph using Image_GraphViz class, which content is based on
+   * module-action structure of the project.
+   *
+   * @param Array $app_content - appliaction-module-action structure
+   * @param String $app_name - appliaction name
+   * @param Array $config - graph settings read from map.ini file
+   * @return Image_GraphViz
+   */
+  public function getAppGraph($app_content, $app_name, $config)
+  {
+    // new graph object
+    $graph = new Image_GraphViz(false, null, 'G', false);
+
+    // adding application nodes
+    $graph->addNode(
+      $app_name,
+      array(
+        'shape' => $config['app_shape'],
+        'comment' => $app_name.' application',
+        'style' => $config['app_style'],
+        'fillcolor' => $config['app_fillcolor']),
+      $app_name);
+
+    // loop iterating each module
+    foreach ($app_content as $mod_name => $mod_content)
+    {
+      // checking whether the module is an admin-generator or not
+      if ($mod_content == "admin-generator")
+      {
+        $graph->addNode(
+          $app_name.'_'.$mod_name,
+          array(
+            'headlabel' => $mod_name,
+            'label' => "<table border=\"0\" cellborder=\"0\"><tr><td><font color=\"red\" face=\"Courier-New\" point-size=\"16\">".$mod_name."</font></td></tr>\n<tr><td>".self::ADMIN_LABEL."</td></tr></table>",
+            'shape' => $config['admin_shape'],
+            'comment' => $mod_name.' module',
+            'style' => $config['admin_style'],
+            'fillcolor' => $config['admin_fillcolor']));
+      }
+      else // module is not admin-generator
+      {
+        $graph->addNode(
+          $app_name.'_'.$mod_name,
+          array(
+            'label' => $mod_name,
+            'shape' => $config['module_shape'],
+            'comment' => $mod_name.' module',
+            'style' => $config['module_style'],
+            'fillcolor' => $config['module_fillcolor']));
+        // loop iterating each action/component
+        foreach($mod_content as $type => $elements)
+        {
+          foreach($elements['elements'] as $elem_index => $elem_name)
+          {
+            $elem_comment = $this->getFormattedComment($mod_content[$type]['comments'][$elem_index]);
+            $graph->addNode(
+              $app_name.'_'.$mod_name.'_'.$elem_name,
+              array(
+                'label' => "<table border=\"0\" cellborder=\"0\"><tr><td><font color=\"chartreuse4\" face=\"Courier-New\" point-size=\"16\">".$elem_name."</font></td></tr>\n<tr><td width=\"5\">".$elem_comment."</td></tr></table>",
+                'shape' => $config[$type.'_shape'],
+                'comment' => $elem_name.' module',
+                'width' => '1.0',
+                'style' => $config[$type.'_style'],
+                'fillcolor' => $config[$type.'_fillcolor']));
+            // link module to an action/component
+            $graph->addEdge(array($app_name.'_'.$mod_name => $app_name.'_'.$mod_name.'_'.$elem_name));
+          }
+        }
+      }
+      // link application to a module
+      $graph->addEdge(array($app_name => $app_name.'_'.$mod_name));
+    }
+    return $graph;
+  }
+
+  /**
    * Executes the current task. The task will analyse the whole application structure,
    * create graph representation for the map graph and then generate the graph based
    * image maps in in 5 different formats.
@@ -385,18 +461,25 @@ EOF;
     // generating content of application-module-action structure
     $content = $this->getContent();
 
-    // graph
-    $graph = $this->getGraph($content, $ini_content);
+    $graphs = array();
+    // project graph
+    $graphs['project'] = $this->getProjectGraph($content, $ini_content);
+    // app graphs
+    foreach($content as $app_name => $app_content)
+      $graphs[$app_name] = $this->getAppGraph($app_content, $app_name, $ini_content);
 
-    // saving dot code to a file
-    file_put_contents($baseDir . '/' . self::DOT_FILE, $graph->parse());
+    foreach($graphs as $name => $graph)
+    {
+      // saving dot code to a file
+      file_put_contents($baseDir . '/' . $name . '.' . self::DOT_EXT, $graph->parse());
 
-    // executing image files generating
-    $this->getFilesystem()->execute('dot ' . $baseDir . '/' . self::DOT_FILE . ' -Tpng -o' . $baseDir . '/' . self::IMG_DOT_FILE);
-    $this->getFilesystem()->execute('neato ' . $baseDir . '/' . self::DOT_FILE . ' -Tpng -o' . $baseDir . '/' . self::IMG_NEATO_FILE);
-    $this->getFilesystem()->execute('twopi ' . $baseDir . '/' . self::DOT_FILE . ' -Tpng -o' . $baseDir . '/' . self::IMG_TWOPI_FILE);
-    $this->getFilesystem()->execute('circo ' . $baseDir . '/' . self::DOT_FILE . ' -Tpng -o' . $baseDir . '/' . self::IMG_CIRCO_FILE);
-    $this->getFilesystem()->execute('fdp ' . $baseDir . '/' . self::DOT_FILE . ' -Tpng -o' . $baseDir . '/' . self::IMG_FDP_FILE);
+      // executing image files generating
+      $this->getFilesystem()->execute('dot ' . $baseDir . '/' . $name . '.' . self::DOT_EXT . ' -Tpng -o' . $baseDir . '/' . $name . '.' . self::IMG_DOT_EXT);
+      $this->getFilesystem()->execute('neato ' . $baseDir . '/' . $name . '.' . self::DOT_EXT . ' -Tpng -o' . $baseDir . '/' . $name . '.' . self::IMG_NEATO_EXT);
+      $this->getFilesystem()->execute('twopi ' . $baseDir . '/' . $name . '.' . self::DOT_EXT . ' -Tpng -o' . $baseDir . '/' . $name . '.' . self::IMG_TWOPI_EXT);
+      $this->getFilesystem()->execute('circo ' . $baseDir . '/' . $name . '.' . self::DOT_EXT . ' -Tpng -o' . $baseDir . '/' . $name . '.' . self::IMG_CIRCO_EXT);
+      $this->getFilesystem()->execute('fdp ' . $baseDir . '/' . $name . '.' . self::DOT_EXT . ' -Tpng -o' . $baseDir . '/' . $name . '.' . self::IMG_FDP_EXT);
+    }
   }
 }
 

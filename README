@@ -26,15 +26,17 @@ following command:
 
 which creates the _doc/graph_ directory and few files inside it:
 
-  *   __application-map.dot__ - source graphviz file for all image files
+  *   __project.dot__, __APP_NAME.dot__ - source graphviz files used for
+image files generating, _project_ file defines the entire project, whereas each
+APP_NAME stands for name of each application.
 
 and alternative images of application map:
 
-  *   __application-map.dot.png__ : image created by __dot__ command
-  *   __application-map.neato.png__ : image created by __neato__ command
-  *   __application-map.twopi.png__ : image created by __twopi__ command
-  *   __application-map.circo.png__ : image created by __circo__ command
-  *   __application-map.fdp.png__ : image created by __fdp__ command
+  *   __project.dot.png__, __APP_NAME.dot.png__ : images created by __dot__ command
+  *   __project.neato.png__, __APP_NAME.neato.png__ : images created by __neato__ command
+  *   __project.twopi.png__, __APP_NAME.twopi.png__ : images created by __twopi__ command
+  *   __project.circo.png__, __APP_NAME.circo.png__ : images created by __circo__ command
+  *   __project.fdp.png__, __APP_NAME.fdp.png__ : images created by __fdp__ command
 
 All possible GraphViz modes are used so that you can just choose which image is
 the most readable for you.
@@ -79,8 +81,6 @@ Application map examples
 
 ![Example fdp application map with components](http://img39.imageshack.us/img39/9818/applicationsfdp.png "Example fdp application map with components")
 
-
-
 ## dot example of medium-size project
 
 [ ![Example dot medium-size project application map](http://img139.imageshack.us/img139/2540/applicationsdot.png "Example dot medium-size project application map") ](http://img265.imageshack.us/img265/2540/applicationsdot.png "click to enlarge")
@@ -90,6 +90,17 @@ _click to enlarge_
 
 [ ![Example circo medium-size project application map](http://img694.imageshack.us/img694/9061/applicationscirco.png "Example circo medium-size project application map") ](http://img202.imageshack.us/img202/9061/applicationscirco.png "click to enlarge")
 _click to enlarge_
+
+## fdp backend application map
+
+[ ![Example backend fdp application map](http://a.imageshack.us/img840/9180/backendfdp.th.png "Example circo medium-size project application map") ](http://a.imageshack.us/img840/9180/backendfdp.png "click to enlarge")
+_click to enlarge_
+
+## circo frontend application map
+
+[ ![Example frontend circo application map](http://a.imageshack.us/img841/8924/frontendcirco.th.png "Example circo medium-size project application map") ](http://a.imageshack.us/img841/8924/frontendcirco.png "click to enlarge")
+_click to enlarge_
+
 
 Prerequisites
 =============
