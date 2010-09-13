@@ -4,61 +4,61 @@
   <channel>plugins.symfony-project.org</channel>
   <summary>Generates application-module-action map images</summary>
   <description>Provides you with a task generating images of appliaction-module-action structure of the project using the graphviz tool.</description>
- <lead>
-  <name>Tomasz Ducin</name>
-  <user>tkoomzaaskz</user>
-  <email>tomasz.ducin@gmail.com</email>
-  <active>yes</active>
- </lead>
- <date>2010-08-16</date>
- <time>11:00:00</time>
- <version>
-   <release>1.2.3</release>
-   <api>1.0.0</api>
- </version>
- <stability>
- <release>stable</release>
- <api>stable</api>
- </stability>
+  <lead>
+    <name>Tomasz Ducin</name>
+    <user>tkoomzaaskz</user>
+    <email>tomasz.ducin@gmail.com</email>
+    <active>yes</active>
+  </lead>
+  <date>2010-09-13</date>
+  <time>11:00:00</time>
+  <version>
+    <release>1.2.4</release>
+    <api>1.2.4</api>
+  </version>
+  <stability>
+    <release>stable</release>
+    <api>stable</api>
+  </stability>
   <license uri="http://www.symfony-project.com/license">MIT</license>
   <notes>-</notes>
 
- <contents>
-   <dir name="/">
-     <dir name="config">
-       <file name="map.ini" role="data" />
-     </dir>
-     <dir name="lib">
-       <dir name="task">
-         <file name="sfProjectApplicationMapTask.class.php" role="data" />
-       </dir>
-       <dir name="vendor">
-         <dir name="Image_GraphViz">
-           <file name="GraphViz.php" role="data" />
-         </dir>
-       </dir>
-     </dir>
-     <file name="LICENSE" role="data" />
-     <file name="README" role="data" />
-   </dir>
- </contents>
+  <contents>
+    <dir name="/">
+      <dir name="config">
+        <file name="map.ini" role="data" />
+      </dir>
+      <dir name="lib">
+        <dir name="task">
+          <file name="sfProjectApplicationMapTask.class.php" role="data" />
+        </dir>
+        <dir name="vendor">
+          <dir name="Image_GraphViz">
+            <file name="GraphViz.php" role="data" />
+          </dir>
+        </dir>
+      </dir>
+      <file name="LICENSE" role="data" />
+      <file name="README" role="data" />
+    </dir>
+  </contents>
 
   <dependencies>
-   <required>
-    <php>
-     <min>5.1.0</min>
-    </php>
-    <pearinstaller>
-     <min>1.4.1</min>
-    </pearinstaller>
-    <package>
-     <name>symfony</name>
-     <channel>pear.symfony-project.com</channel>
-     <min>1.3.0</min>
-     <max>1.5.0</max>
-     <exclude>1.5.0</exclude>
-    </package>
-   </required>
+    <required>
+      <php>
+        <min>5.1.0</min>
+      </php>
+      <pearinstaller>
+        <min>1.4.1</min>
+      </pearinstaller>
+      <package>
+        <name>symfony</name>
+        <channel>pear.symfony-project.com</channel>
+        <min>1.3.0</min>
+        <max>1.5.0</max>
+        <exclude>1.5.0</exclude>
+      </package>
+    </required>
   </dependencies>
 
   <phprelease>
@@ -66,124 +66,142 @@
 
   <changelog>
 
-   <release>
-    <version>
-     <release>1.2.3</release>
-     <api>1.0.0</api>
-    </version>
-    <stability>
-     <release>stable</release>
-     <api>stable</api>
-    </stability>
-    <license uri="http://www.symfony-project.org/license">MIT license</license>
-    <date>2010-08-16</date>
-    <license>MIT</license>
-    <notes>
-     * added separate application graphs (1 graph for entire project + 1 for each application)    </notes>
-   </release>
+    <release>
+      <version>
+        <release>1.2.4</release>
+        <api>1.2.4</api>
+      </version>
+      <stability>
+        <release>stable</release>
+        <api>stable</api>
+      </stability>
+      <license uri="http://www.symfony-project.org/license">MIT license</license>
+      <date>2010-09-13</date>
+      <license>MIT</license>
+      <notes>
+        * support for Windows systems (thanks to Gordon Bazeley)
+      </notes>
+    </release>
 
-   <release>
-    <version>
-     <release>1.2.2</release>
-     <api>1.0.0</api>
-    </version>
-    <stability>
-     <release>stable</release>
-     <api>stable</api>
-    </stability>
-    <license uri="http://www.symfony-project.org/license">MIT license</license>
-    <date>2010-05-22</date>
-    <license>MIT</license>
-    <notes>
-     * task lib documentaion updated
-     * more examples of generated maps - for medium-size projects
-    </notes>
-   </release>
+    <release>
+      <version>
+        <release>1.2.3</release>
+        <api>1.0.0</api>
+      </version>
+      <stability>
+        <release>stable</release>
+        <api>stable</api>
+      </stability>
+      <license uri="http://www.symfony-project.org/license">MIT license</license>
+      <date>2010-08-16</date>
+      <license>MIT</license>
+      <notes>
+        * added separate application graphs (1 graph for entire project + 1 for each application)
+      </notes>
+    </release>
 
-   <release>
-    <version>
-     <release>1.2.1</release>
-     <api>1.0.0</api>
-    </version>
-    <stability>
-     <release>stable</release>
-     <api>stable</api>
-    </stability>
-    <license uri="http://www.symfony-project.org/license">MIT license</license>
-    <date>2010-05-07</date>
-    <license>MIT</license>
-    <notes>
-     * fixed bug reported by Kamil Kraśnik (wrong comment included when used non-execute methods)
-    </notes>
-   </release>
+    <release>
+      <version>
+        <release>1.2.2</release>
+        <api>1.0.0</api>
+      </version>
+      <stability>
+        <release>stable</release>
+        <api>stable</api>
+      </stability>
+      <license uri="http://www.symfony-project.org/license">MIT license</license>
+      <date>2010-05-22</date>
+      <license>MIT</license>
+      <notes>
+        * task lib documentaion updated
+        * more examples of generated maps - for medium-size projects
+      </notes>
+    </release>
 
-   <release>
-    <version>
-     <release>1.2.0</release>
-     <api>1.0.0</api>
-    </version>
-    <stability>
-     <release>stable</release>
-     <api>stable</api>
-    </stability>
-    <license uri="http://www.symfony-project.org/license">MIT license</license>
-    <date>2010-05-02</date>
-    <license>MIT</license>
-    <notes>
-     * distinguish between actions and components
-    </notes>
-   </release>
+    <release>
+      <version>
+        <release>1.2.1</release>
+        <api>1.0.0</api>
+      </version>
+      <stability>
+        <release>stable</release>
+        <api>stable</api>
+      </stability>
+      <license uri="http://www.symfony-project.org/license">MIT license</license>
+      <date>2010-05-07</date>
+      <license>MIT</license>
+      <notes>
+        * fixed bug reported by Kamil Kraśnik (wrong comment included when used non-execute methods)
+      </notes>
+    </release>
 
-   <release>
-    <version>
-     <release>1.1.1</release>
-     <api>1.0.0</api>
-    </version>
-    <stability>
-     <release>stable</release>
-     <api>stable</api>
-    </stability>
-    <license uri="http://www.symfony-project.org/license">MIT license</license>
-    <date>2010-01-01</date>
-    <license>MIT</license>
-    <notes>
-     * visual settings configuration added
-    </notes>
-   </release>
+    <release>
+      <version>
+        <release>1.2.0</release>
+        <api>1.0.0</api>
+      </version>
+      <stability>
+        <release>stable</release>
+        <api>stable</api>
+      </stability>
+      <license uri="http://www.symfony-project.org/license">MIT license</license>
+      <date>2010-05-02</date>
+      <license>MIT</license>
+      <notes>
+        * distinguish between actions and components
+      </notes>
+    </release>
 
-   <release>
-    <version>
-     <release>1.1.0</release>
-     <api>1.0.0</api>
-    </version>
-    <stability>
-     <release>stable</release>
-     <api>stable</api>
-    </stability>
-    <license uri="http://www.symfony-project.org/license">MIT license</license>
-    <date>2009-12-21</date>
-    <license>MIT</license>
-    <notes>
-     * created plugin branch for symfony version 1.4
-    </notes>
-   </release>
+    <release>
+      <version>
+        <release>1.1.1</release>
+        <api>1.0.0</api>
+      </version>
+      <stability>
+        <release>stable</release>
+        <api>stable</api>
+      </stability>
+      <license uri="http://www.symfony-project.org/license">MIT license</license>
+      <date>2010-01-01</date>
+      <license>MIT</license>
+      <notes>
+        * visual settings configuration added
+      </notes>
+    </release>
 
-   <release>
-    <version>
-     <release>1.0.0</release>
-     <api>1.0.0</api>
-    </version>
-    <stability>
-     <release>stable</release>
-     <api>stable</api>
-    </stability>
-    <license uri="http://www.symfony-project.org/license">MIT license</license>
-    <date>2009-12-18</date>
-    <license>MIT</license>
-    <notes>
-     * initial import
-    </notes>
-   </release>
+    <release>
+      <version>
+        <release>1.1.0</release>
+        <api>1.0.0</api>
+      </version>
+      <stability>
+        <release>stable</release>
+        <api>stable</api>
+      </stability>
+      <license uri="http://www.symfony-project.org/license">MIT license</license>
+      <date>2009-12-21</date>
+      <license>MIT</license>
+      <notes>
+        * created plugin branch for symfony version 1.4
+      </notes>
+    </release>
+
+    <release>
+      <version>
+        <release>1.0.0</release>
+        <api>1.0.0</api>
+      </version>
+      <stability>
+        <release>stable</release>
+        <api>stable</api>
+      </stability>
+      <license uri="http://www.symfony-project.org/license">MIT license</license>
+      <date>2009-12-18</date>
+      <license>MIT</license>
+      <notes>
+        * initial import
+      </notes>
+    </release>
 
   </changelog>
 

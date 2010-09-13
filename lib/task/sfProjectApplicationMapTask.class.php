@@ -15,63 +15,63 @@
 class sfProjectApplicationMapTask extends sfBaseTask
 {
   /**
-   * Relative repositry path for the generated files
+   * Relative repositry path for the generated files.
    *
    * @var string
    */
   const GRAPH_DIR = "doc/graph";
 
   /**
-   * Name of the file containing dot code
+   * Name of the file containing dot code.
    *
    * @var string
    */
   const DOT_EXT = "dot";
 
   /**
-   * Name of the image file created by the dot command
+   * Name of the image file created by the dot command.
    *
    * @var string
    */
   const IMG_DOT_EXT = "dot.png";
 
   /**
-   * Name of the image file created by the neato command
+   * Name of the image file created by the neato command.
    *
    * @var string
    */
   const IMG_NEATO_EXT = "neato.png";
 
   /**
-   * Name of the image file created by the twopi command
+   * Name of the image file created by the twopi command.
    *
    * @var string
    */
   const IMG_TWOPI_EXT = "twopi.png";
 
   /**
-   * Name of the image file created by the circo command
+   * Name of the image file created by the circo command.
    *
    * @var string
    */
   const IMG_CIRCO_EXT = "circo.png";
 
   /**
-   * Name of the image file created by the fdp command
+   * Name of the image file created by the fdp command.
    *
    * @var string
    */
   const IMG_FDP_EXT = "fdp.png";
 
   /**
-   * Max length (in characters) of each line of action comment
+   * Max length (in characters) of each line of action comment.
    *
    * @var integer
    */
   const MAX_LINE_LENGTH = 12;
 
   /**
-   * Label shown for admin-generator modules
+   * Label shown for admin-generator modules.
    *
    * @var string
    */
@@ -95,7 +95,7 @@ EOF;
   }
 
   /**
-   * Checks if a given directory is correct
+   * Checks if a given directory is correct.
    *
    * @param String $dir - name of the directory
    * @return Boolean - whether given parameter is a correct directory
@@ -106,7 +106,7 @@ EOF;
   }
 
   /**
-   * Generates HTML format of comment to be nicely displayed by the graph
+   * Generates HTML format of comment to be nicely displayed by the graph.
    *
    * @param $text - original comment content
    * @return String - HTML formatted comment
@@ -155,7 +155,7 @@ EOF;
     while (false !== ($file_app = readdir($handle_app)))
     {
       // everything except for '.', '..' and '.svn'
-      if ($this->correct_dir($file_app))
+      if (is_dir($dir_app.$file_app) && $this->correct_dir($file_app))
       {
         // single application content subarray
         $content[$file_app] = array();
@@ -170,7 +170,7 @@ EOF;
         while (false !== ($file_mod = readdir($handle_mod)))
         {
           // everything except for '.', '..' and '.svn'
-          if ($this->correct_dir($file_mod))
+          if (is_dir($dir_mod.$file_mod) && $this->correct_dir($file_mod))
           {
             // single module content subarray
             $content[$file_app][$file_mod] = array();
@@ -431,9 +431,9 @@ EOF;
   }
 
   /**
-   * Executes the current task. The task will analyse the whole application structure,
-   * create graph representation for the map graph and then generate the graph based
-   * image maps in in 5 different formats.
+   * Executes the current task. The task will analyse the whole application
+   * structure, create graph representation for the map graph and then generate
+   * the graph based image maps in in 5 different formats.
    *
    * @param array $arguments  An array of arguments
    * @param array $options    An array of options
@@ -474,11 +474,11 @@ EOF;
       file_put_contents($baseDir . '/' . $name . '.' . self::DOT_EXT, $graph->parse());
 
       // executing image files generating
-      $this->getFilesystem()->execute('dot ' . $baseDir . '/' . $name . '.' . self::DOT_EXT . ' -Tpng -o' . $baseDir . '/' . $name . '.' . self::IMG_DOT_EXT);
-      $this->getFilesystem()->execute('neato ' . $baseDir . '/' . $name . '.' . self::DOT_EXT . ' -Tpng -o' . $baseDir . '/' . $name . '.' . self::IMG_NEATO_EXT);
-      $this->getFilesystem()->execute('twopi ' . $baseDir . '/' . $name . '.' . self::DOT_EXT . ' -Tpng -o' . $baseDir . '/' . $name . '.' . self::IMG_TWOPI_EXT);
-      $this->getFilesystem()->execute('circo ' . $baseDir . '/' . $name . '.' . self::DOT_EXT . ' -Tpng -o' . $baseDir . '/' . $name . '.' . self::IMG_CIRCO_EXT);
-      $this->getFilesystem()->execute('fdp ' . $baseDir . '/' . $name . '.' . self::DOT_EXT . ' -Tpng -o' . $baseDir . '/' . $name . '.' . self::IMG_FDP_EXT);
+      $this->getFilesystem()->execute('dot ' . escapeshellarg( $baseDir . '/' . $name . '.' . self::DOT_EXT ) . ' -Tpng -o' . escapeshellarg( $baseDir . '/' . $name . '.' . self::IMG_DOT_EXT ) );
+      $this->getFilesystem()->execute('neato ' . escapeshellarg( $baseDir . '/' . $name . '.' . self::DOT_EXT ) . ' -Tpng -o' . escapeshellarg( $baseDir . '/' . $name . '.' . self::IMG_NEATO_EXT ) );
+      $this->getFilesystem()->execute('twopi ' . escapeshellarg( $baseDir . '/' . $name . '.' . self::DOT_EXT ) . ' -Tpng -o' . escapeshellarg( $baseDir . '/' . $name . '.' . self::IMG_TWOPI_EXT ) );
+      $this->getFilesystem()->execute('circo ' . escapeshellarg( $baseDir . '/' . $name . '.' . self::DOT_EXT ) . ' -Tpng -o' . escapeshellarg( $baseDir . '/' . $name . '.' . self::IMG_CIRCO_EXT ) );
+      $this->getFilesystem()->execute('fdp ' . escapeshellarg( $baseDir . '/' . $name . '.' . self::DOT_EXT ) . ' -Tpng -o' . escapeshellarg( $baseDir . '/' . $name . '.' . self::IMG_FDP_EXT ) );
     }
   }
 }
