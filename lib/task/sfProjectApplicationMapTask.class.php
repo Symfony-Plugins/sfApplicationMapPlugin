@@ -283,8 +283,7 @@ EOF;
         'shape' => $config['root_shape'],
         'comment' => 'root node',
         'style' => $config['root_style'],
-        'fillcolor' => $config['root_fillcolor']),
-      $app_name);
+        'fillcolor' => $config['root_fillcolor']));
 
     // loop iterating applications
     foreach ($content as $app_name => $app_content)
@@ -296,8 +295,7 @@ EOF;
           'shape' => $config['app_shape'],
           'comment' => $app_name.' application',
           'style' => $config['app_style'],
-          'fillcolor' => $config['app_fillcolor']),
-        $app_name);
+          'fillcolor' => $config['app_fillcolor']));
 
       // loop iterating each module
       foreach ($app_content as $mod_name => $mod_content)
@@ -375,8 +373,7 @@ EOF;
         'shape' => $config['app_shape'],
         'comment' => $app_name.' application',
         'style' => $config['app_style'],
-        'fillcolor' => $config['app_fillcolor']),
-      $app_name);
+        'fillcolor' => $config['app_fillcolor']));
 
     // loop iterating each module
     foreach ($app_content as $mod_name => $mod_content)
